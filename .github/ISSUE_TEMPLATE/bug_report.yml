@@ -1,0 +1,53 @@
+name: Bug report
+description: Something is broken or behaving unexpectedly
+title: "[bug] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a report. Please fill in as much as you can.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+      placeholder: When I click X, the globe freezes and the inspector shows NaN…
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Be precise. We need to reproduce the bug to fix it.
+      placeholder: |
+        1. Open https://astroraul.github.io/orbitguard/
+        2. Click "Inspect" on satellite XYZ
+        3. Set altitude to 600 km
+        4. Observe the AI threat score
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser & OS
+      placeholder: Chrome 134 on macOS 15.3
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console output
+      description: Paste any errors from the browser devtools console.
+      render: text
+  - type: input
+    id: commit
+    attributes:
+      label: Commit SHA (if known)
+      description: From the page footer or `git rev-parse HEAD` if running locally.

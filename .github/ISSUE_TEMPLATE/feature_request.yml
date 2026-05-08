@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest a new capability or enhancement
+title: "[feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the user need, not the implementation.
+      placeholder: As a satellite operator, I need to see conjunction risk for my own ephemeris, because…
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Mockups, links, references, related issues.
