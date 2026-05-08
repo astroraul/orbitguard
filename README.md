@@ -9,7 +9,7 @@
 [![Built with Three.js](https://img.shields.io/badge/three.js-r128-black?style=for-the-badge&logo=three.js)](https://threejs.org/)
 [![Data: CelesTrak](https://img.shields.io/badge/data-CelesTrak-orange?style=for-the-badge)](https://celestrak.org/)
 
-[**Live demo →**](https://astroraul.github.io/orbitguard/)
+[**Live demo →**](https://astroraul.github.io/orbitguard/)  ·  [**Investor overview →**](https://astroraul.github.io/orbitguard/pitch.html)
 
 </div>
 

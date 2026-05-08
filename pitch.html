@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="OrbitGuard AI — Real-time MMOD risk assessment for the trillion-dollar orbital economy. Investor overview." />
+<meta property="og:title" content="OrbitGuard AI — Securing the Orbital Economy" />
+<meta property="og:description" content="Real-time micrometeoroid & orbital debris risk assessment for satellite operators. Investor overview." />
+<meta property="og:url" content="https://astroraul.github.io/orbitguard/pitch.html" />
+<title>OrbitGuard AI — Securing the Orbital Economy</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg-0:#020611;
+  --bg-1:#040d1f;
+  --bg-2:#0a1a2e;
+  --line:#0a2a45;
+  --accent:#00ccff;
+  --accent-soft:rgba(0,204,255,.12);
+  --accent-glow:rgba(0,204,255,.35);
+  --text:#c8e8ff;
+  --text-dim:#6a8aaa;
+  --text-faint:#3a5a7a;
+  --warn:#ff9540;
+  --danger:#ff4060;
+  --success:#40ffaa;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-0);
+  color:var(--text);
+  font-family:'Share Tech Mono',monospace;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+::selection{background:var(--accent);color:var(--bg-0)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-shadow:0 0 12px var(--accent-glow)}
+
+/* === STARFIELD === */
+#stars{position:fixed;inset:0;z-index:-2;background:radial-gradient(ellipse at 30% 20%,#06182f 0%,#020611 60%)}
+#stars canvas{display:block;width:100%;height:100%}
+.scanline{position:fixed;inset:0;z-index:-1;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,204,255,.015) 0,rgba(0,204,255,.015) 1px,transparent 1px,transparent 3px)}
+
+/* === NAV === */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 36px;
+  background:rgba(2,6,17,.85);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+  font-family:'Orbitron',sans-serif;
+}
+nav .brand{font-size:14px;font-weight:900;letter-spacing:4px;color:var(--accent)}
+nav .brand span{color:var(--text-dim);font-weight:400;letter-spacing:2px;font-size:10px;margin-left:8px}
+nav ul{display:flex;gap:28px;list-style:none}
+nav ul a{font-size:10px;letter-spacing:2px;color:var(--text-dim);transition:color .2s}
+nav ul a:hover{color:var(--accent)}
+nav .cta{
+  font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;
+  padding:8px 18px;border:1px solid var(--accent);color:var(--accent);
+  border-radius:3px;transition:all .2s;
+}
+nav .cta:hover{background:var(--accent);color:var(--bg-0);box-shadow:0 0 24px var(--accent-glow)}
+@media (max-width:720px){nav ul{display:none}nav{padding:12px 18px}}
+
+/* === SECTIONS === */
+section{
+  position:relative;
+  padding:140px 8% 100px;
+  max-width:1280px;
+  margin:0 auto;
+}
+.section-tag{
+  font-family:'Orbitron',sans-serif;
+  font-size:10px;letter-spacing:4px;color:var(--accent);
+  display:inline-flex;align-items:center;gap:10px;
+  margin-bottom:24px;
+}
+.section-tag::before{content:'';width:30px;height:1px;background:var(--accent)}
+h1,h2,h3,h4{font-family:'Orbitron',sans-serif;font-weight:700;color:var(--text)}
+h1{font-size:clamp(38px,6vw,76px);font-weight:900;line-height:1;letter-spacing:-1px}
+h2{font-size:clamp(28px,4vw,46px);font-weight:900;line-height:1.1;margin-bottom:24px;letter-spacing:-.5px}
+h3{font-size:20px;font-weight:700;letter-spacing:.5px;margin-bottom:14px}
+h4{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--accent);margin-bottom:10px;font-family:'Orbitron',sans-serif}
+p{font-size:15px;color:#9ec0d8;max-width:680px}
+p.lead{font-size:18px;color:var(--text);max-width:780px}
+.muted{color:var(--text-dim);font-size:12px}
+.placeholder{color:var(--warn);background:rgba(255,149,64,.08);padding:1px 7px;border-radius:3px;font-size:.9em;border:1px dashed rgba(255,149,64,.3)}
+
+/* === HERO === */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding-top:160px;padding-bottom:80px;
+  position:relative;
+}
+.hero .eyebrow{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:4px;color:var(--accent);margin-bottom:18px}
+.hero h1{margin-bottom:28px;max-width:1100px}
+.hero h1 em{font-style:normal;color:var(--accent);text-shadow:0 0 40px var(--accent-glow)}
+.hero p.lead{max-width:720px;margin-bottom:40px;font-size:20px;line-height:1.5;color:#a8c8e0}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:80px}
+.btn{
+  font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px;font-weight:700;
+  padding:16px 28px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+  transition:all .2s;border:1px solid;
+}
+.btn-primary{background:var(--accent);color:var(--bg-0);border-color:var(--accent);box-shadow:0 0 30px var(--accent-glow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 50px var(--accent-glow);text-shadow:none}
+.btn-secondary{background:transparent;color:var(--text);border-color:var(--line)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn::after{content:'→';transition:transform .2s}
+.btn:hover::after{transform:translateX(4px)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);max-width:900px}
+.hero-stats .s{background:var(--bg-0);padding:22px 18px}
+.hero-stats .v{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;color:var(--accent);line-height:1}
+.hero-stats .l{font-size:9px;letter-spacing:2px;color:var(--text-dim);margin-top:8px;text-transform:uppercase}
+@media(max-width:720px){.hero-stats{grid-template-columns:repeat(2,1fr)}}
+
+/* === PROBLEM === */
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+@media(max-width:900px){.problem-grid{grid-template-columns:1fr}}
+.stat-card{
+  background:linear-gradient(135deg,rgba(255,64,96,.05),rgba(2,6,17,.6));
+  border:1px solid rgba(255,64,96,.2);
+  padding:32px 26px;border-radius:6px;
+  position:relative;overflow:hidden;
+}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--danger),transparent)}
+.stat-card .big{font-family:'Orbitron',sans-serif;font-size:54px;font-weight:900;color:var(--danger);line-height:1;margin-bottom:6px;letter-spacing:-2px}
+.stat-card .sub{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--text);margin-bottom:14px;text-transform:uppercase}
+.stat-card .desc{font-size:13px;color:var(--text-dim);line-height:1.6}
+.stat-card .src{font-size:10px;color:var(--text-faint);margin-top:14px;letter-spacing:1px}
+
+/* === SOLUTION === */
+.solution-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:32px}
+@media(max-width:900px){.solution-grid{grid-template-columns:1fr}}
+.sol-card{background:var(--bg-0);padding:36px 28px;transition:background .3s}
+.sol-card:hover{background:var(--bg-1)}
+.sol-card .icon{width:42px;height:42px;border:1px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;color:var(--accent);font-family:'Orbitron',sans-serif;font-weight:900;font-size:16px}
+
+/* === DEMO === */
+.demo-frame{
+  position:relative;margin-top:32px;border:1px solid var(--line);border-radius:8px;overflow:hidden;
+  background:var(--bg-1);
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 60px rgba(0,204,255,.06);
+}
+.demo-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg-2);border-bottom:1px solid var(--line)}
+.demo-bar .dot{width:9px;height:9px;border-radius:50%}
+.demo-bar .url{margin-left:14px;font-size:10px;color:var(--text-dim);letter-spacing:1px}
+.demo-iframe-wrap{position:relative;padding-top:62%;background:var(--bg-0)}
+.demo-iframe-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.demo-cta{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--line);background:var(--bg-1)}
+.demo-cta span{font-size:11px;color:var(--text-dim);letter-spacing:1px}
+
+/* === CAPABILITIES === */
+.cap-list{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px}
+@media(max-width:900px){.cap-list{grid-template-columns:1fr}}
+.cap-row{
+  display:flex;gap:24px;padding:28px;
+  border:1px solid var(--line);border-radius:6px;
+  background:linear-gradient(135deg,var(--bg-1),var(--bg-0));
+  transition:border-color .2s,transform .2s;
+}
+.cap-row:hover{border-color:var(--accent);transform:translateY(-2px)}
+.cap-row .num{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:var(--accent);min-width:50px;line-height:1}
+
+/* === MARKET === */
+.market-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:32px}
+@media(max-width:900px){.market-wrap{grid-template-columns:1fr}}
+.tam-block{display:flex;flex-direction:column;gap:14px}
+.tam-row{display:grid;grid-template-columns:60px 1fr 100px;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.tam-row .lbl{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--accent)}
+.tam-row .nm{font-size:13px;color:var(--text)}
+.tam-row .val{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:var(--text);text-align:right}
+.tam-bar{height:4px;background:var(--bg-2);border-radius:2px;overflow:hidden;margin-top:6px}
+.tam-bar div{height:100%;background:linear-gradient(90deg,var(--accent),transparent)}
+
+/* === WHY NOW === */
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:32px}
+@media(max-width:900px){.why-grid{grid-template-columns:1fr}}
+.why-card{padding:28px;border-left:2px solid var(--accent);background:rgba(0,204,255,.03)}
+
+/* === TRACTION === */
+.traction-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:32px}
+@media(max-width:900px){.traction-grid{grid-template-columns:repeat(2,1fr)}}
+.traction-grid .s{background:var(--bg-0);padding:30px 24px;text-align:left}
+.traction-grid .v{font-family:'Orbitron',sans-serif;font-size:34px;font-weight:900;color:var(--accent);line-height:1}
+.traction-grid .l{font-size:10px;letter-spacing:2px;color:var(--text-dim);margin-top:10px}
+.logos{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px;align-items:center}
+.logos .lg{padding:14px 24px;border:1px dashed var(--text-faint);color:var(--text-dim);font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;border-radius:3px}
+
+/* === BUSINESS === */
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:32px}
+@media(max-width:900px){.pricing{grid-template-columns:1fr}}
+.tier{padding:32px 28px;border:1px solid var(--line);border-radius:8px;background:var(--bg-1);position:relative;transition:transform .2s,border-color .2s}
+.tier:hover{transform:translateY(-4px);border-color:var(--accent)}
+.tier.featured{border-color:var(--accent);background:linear-gradient(135deg,rgba(0,204,255,.08),var(--bg-1))}
+.tier .name{font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:3px;color:var(--accent);margin-bottom:12px}
+.tier .price{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;color:var(--text);margin-bottom:4px}
+.tier .price small{font-size:13px;color:var(--text-dim);font-weight:400}
+.tier ul{list-style:none;margin-top:18px;border-top:1px solid var(--line);padding-top:18px}
+.tier li{font-size:13px;padding:8px 0;color:var(--text-dim);display:flex;gap:10px}
+.tier li::before{content:'+';color:var(--accent);font-weight:900}
+
+/* === MOAT === */
+.moat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+@media(max-width:900px){.moat-grid{grid-template-columns:1fr}}
+.moat-card{padding:28px;background:var(--bg-1);border-radius:6px;border:1px solid var(--line)}
+
+/* === ROADMAP === */
+.timeline{position:relative;margin-top:48px;padding-left:30px}
+.timeline::before{content:'';position:absolute;left:8px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.tl-item{position:relative;padding-bottom:36px}
+.tl-item::before{content:'';position:absolute;left:-26px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--bg-0);border:2px solid var(--accent)}
+.tl-item.done::before{background:var(--accent)}
+.tl-item .when{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--accent);margin-bottom:6px}
+.tl-item .what{font-family:'Orbitron',sans-serif;font-size:15px;color:var(--text);margin-bottom:6px}
+.tl-item .desc{font-size:13px;color:var(--text-dim)}
+
+/* === TEAM === */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px}
+@media(max-width:900px){.team-grid{grid-template-columns:1fr}}
+.person{padding:28px;border:1px solid var(--line);border-radius:6px;text-align:center;background:var(--bg-1)}
+.person .av{width:80px;height:80px;border-radius:50%;margin:0 auto 16px;background:linear-gradient(135deg,var(--bg-2),var(--accent-soft));border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-weight:900;color:var(--accent);font-size:22px}
+.person .nm{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--text);margin-bottom:4px}
+.person .role{font-size:11px;letter-spacing:2px;color:var(--accent);margin-bottom:12px;text-transform:uppercase}
+.person .bio{font-size:12px;color:var(--text-dim);line-height:1.6}
+
+/* === ASK === */
+.ask{
+  margin-top:32px;padding:48px;
+  border:1px solid var(--accent);border-radius:8px;
+  background:linear-gradient(135deg,rgba(0,204,255,.07),var(--bg-1));
+  position:relative;overflow:hidden;
+}
+.ask::before{content:'';position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,var(--accent-soft),transparent 70%);pointer-events:none}
+.ask-amount{font-family:'Orbitron',sans-serif;font-size:60px;font-weight:900;color:var(--accent);line-height:1;margin:14px 0;text-shadow:0 0 30px var(--accent-glow)}
+.ask-amount small{font-size:18px;color:var(--text-dim);font-weight:400;letter-spacing:2px}
+.use-of-funds{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:36px}
+@media(max-width:720px){.use-of-funds{grid-template-columns:repeat(2,1fr)}}
+.uof{padding:18px;border-left:2px solid var(--accent)}
+.uof .pct{font-family:'Orbitron',sans-serif;font-size:24px;font-weight:900;color:var(--accent)}
+.uof .what{font-size:11px;color:var(--text);letter-spacing:1px;margin-top:6px;text-transform:uppercase}
+
+/* === CONTACT === */
+.contact-cta{
+  text-align:center;
+  padding:80px 8%;
+  border-top:1px solid var(--line);
+  margin-top:80px;
+}
+.contact-cta h2{margin-bottom:18px}
+.contact-cta p{margin:0 auto 32px}
+.contact-grid{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+
+/* === FOOTER === */
+footer{
+  border-top:1px solid var(--line);
+  padding:36px 8%;
+  text-align:center;
+  font-size:11px;color:var(--text-faint);letter-spacing:1px;
+}
+footer a{color:var(--text-dim)}
+footer a:hover{color:var(--accent)}
+
+/* === ANIMATIONS === */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.fade-in.visible{opacity:1;transform:none}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block;animation:pulse 1.6s infinite;margin-right:8px}
+</style>
+</head>
+<body>
+
+<div id="stars"><canvas id="starcanvas"></canvas></div>
+<div class="scanline"></div>
+
+<!-- ====================================================================== -->
+<!-- NAV                                                                    -->
+<!-- ====================================================================== -->
+<nav>
+  <div class="brand">ORBITGUARD <span>AI</span></div>
+  <ul>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="#capabilities">Capabilities</a></li>
+    <li><a href="#market">Market</a></li>
+    <li><a href="#traction">Traction</a></li>
+    <li><a href="#team">Team</a></li>
+  </ul>
+  <a href="#contact" class="cta">Talk to us →</a>
+</nav>
+
+<!-- ====================================================================== -->
+<!-- HERO                                                                   -->
+<!-- ====================================================================== -->
+<section class="hero">
+  <div class="eyebrow"><span class="live-dot"></span>SERIES <span class="placeholder">[SEED]</span> · TALLINN, ESTONIA</div>
+  <h1>Securing the<br/><em>orbital economy</em>.</h1>
+  <p class="lead">
+    OrbitGuard AI is a real-time micrometeoroid &amp; orbital debris (MMOD) risk platform for satellite operators. We turn the world's TLE catalogs and breakup feeds into per-asset threat intelligence — in the browser, in seconds.
+  </p>
+  <div class="hero-actions">
+    <a href="./" class="btn btn-primary">Launch live demo</a>
+    <a href="#contact" class="btn btn-secondary">Investor deck</a>
+  </div>
+  <div class="hero-stats">
+    <div class="s"><div class="v" data-count="36500">0</div><div class="l">Tracked debris &gt;10cm</div></div>
+    <div class="s"><div class="v" data-count="1000000" data-suffix="+">0</div><div class="l">Lethal fragments 1–10cm</div></div>
+    <div class="s"><div class="v" data-count="10200">0</div><div class="l">Active satellites</div></div>
+    <div class="s"><div class="v">$1.8T</div><div class="l">Space economy by 2035</div></div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- PROBLEM                                                                -->
+<!-- ====================================================================== -->
+<section id="problem" class="fade-in">
+  <div class="section-tag">01 / THE PROBLEM</div>
+  <h2>Orbit is getting crowded.<br/>Risk modeling hasn't kept up.</h2>
+  <p class="lead">Operators today face an exponential rise in trackable objects, untrackable lethal fragments, and rapid-cadence breakup events — yet most still rely on emailed PDF conjunction reports and offline tools that pre-date mega-constellations.</p>
+
+  <div class="problem-grid">
+    <div class="stat-card">
+      <div class="big">+200%</div>
+      <div class="sub">Active satellites since 2020</div>
+      <div class="desc">From ~3,300 in 2020 to ~10,200 today, driven primarily by Starlink and other LEO constellations.</div>
+      <div class="src">Source: ESA Space Environment Report 2025</div>
+    </div>
+    <div class="stat-card">
+      <div class="big">12,000+</div>
+      <div class="sub">Conjunction warnings / 6mo</div>
+      <div class="desc">SpaceX alone reported over 12,000 maneuver events in a single 6-month reporting window — a number that doubles every ~2 years.</div>
+      <div class="src">Source: SpaceX FCC reports</div>
+    </div>
+    <div class="stat-card">
+      <div class="big">5</div>
+      <div class="sub">Major breakups since 2021</div>
+      <div class="desc">Cosmos 1408 ASAT, Resurs P1, NOAA-17, Long March 6A upper stage, Intelsat 33e — each adding hundreds-to-thousands of trackable fragments.</div>
+      <div class="src">Source: 18 SDS / Slingshot data</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- SOLUTION                                                               -->
+<!-- ====================================================================== -->
+<section id="solution" class="fade-in">
+  <div class="section-tag">02 / THE SOLUTION</div>
+  <h2>One pane of glass.<br/>Operator-grade. Browser-native.</h2>
+  <p class="lead">OrbitGuard ingests live TLE catalogs and breakup feeds, propagates them in real time, and surfaces per-asset MMOD threat scores, flux estimates, and conjunction context — without a server, an install, or a license file.</p>
+
+  <div class="solution-grid">
+    <div class="sol-card">
+      <div class="icon">01</div>
+      <h3>Real-time situational awareness</h3>
+      <p>3D LEO globe with SGP4-propagated catalogs from CelesTrak, refreshed continuously. Pan, click any object, see its full orbital state.</p>
+    </div>
+    <div class="sol-card">
+      <div class="icon">02</div>
+      <h3>AI-derived threat scoring</h3>
+      <p>Heuristic v3.1 fuses conjunction proximity, debris density at altitude, recent breakup activity, and asset cross-section into a single 0–100 risk index.</p>
+    </div>
+    <div class="sol-card">
+      <div class="icon">03</div>
+      <h3>Mission-ready reporting</h3>
+      <p>Export per-orbit or per-asset risk briefings as PDF/PNG. Designed to be consumed by both engineers and underwriters.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- DEMO                                                                   -->
+<!-- ====================================================================== -->
+<section id="demo" class="fade-in">
+  <div class="section-tag">03 / SEE IT LIVE</div>
+  <h2>The product, running right now.</h2>
+  <p class="lead">No mockups. The frame below is the actual production app, served from this same domain.</p>
+
+  <div class="demo-frame">
+    <div class="demo-bar">
+      <span class="dot" style="background:#ff5f57"></span>
+      <span class="dot" style="background:#febc2e"></span>
+      <span class="dot" style="background:#28c840"></span>
+      <span class="url">astroraul.github.io/orbitguard/</span>
+    </div>
+    <div class="demo-iframe-wrap">
+      <iframe src="./" loading="lazy" title="OrbitGuard live demo"></iframe>
+    </div>
+    <div class="demo-cta">
+      <span><span class="live-dot"></span>LIVE — pulling current CelesTrak data</span>
+      <a href="./" target="_blank" class="btn btn-secondary" style="padding:8px 16px;font-size:10px">Open in full screen</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- CAPABILITIES                                                           -->
+<!-- ====================================================================== -->
+<section id="capabilities" class="fade-in">
+  <div class="section-tag">04 / CAPABILITIES</div>
+  <h2>Everything an LEO operator needs<br/>in one screen.</h2>
+
+  <div class="cap-list">
+    <div class="cap-row"><div class="num">01</div><div><h3>3D LEO globe</h3><p>WebGL render of Earth with real-time satellite/debris positions. Click any object for full orbital state and threat context.</p></div></div>
+    <div class="cap-row"><div class="num">02</div><div><h3>MMOD flux calculator</h3><p>Estimate impact flux for a user-defined orbit (altitude, inclination, area, mission duration) using a parametric ORDEM/MASTER-style model.</p></div></div>
+    <div class="cap-row"><div class="num">03</div><div><h3>Breakup event tracker</h3><p>Chronological feed of recent on-orbit fragmentation events with severity bands and altitude-shell impact summaries.</p></div></div>
+    <div class="cap-row"><div class="num">04</div><div><h3>AI threat scoring v3.1</h3><p>Per-asset 0–100 risk score combining conjunction proximity, local debris density, and recent breakup proximity.</p></div></div>
+    <div class="cap-row"><div class="num">05</div><div><h3>Asset inspector</h3><p>One-click drill-in: orbital elements, classification, country of registry, last update timestamp, threat history.</p></div></div>
+    <div class="cap-row"><div class="num">06</div><div><h3>Mission report export</h3><p>One-click printable risk briefings — designed for ops engineers, mission directors, and insurance underwriters alike.</p></div></div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- MARKET                                                                 -->
+<!-- ====================================================================== -->
+<section id="market" class="fade-in">
+  <div class="section-tag">05 / MARKET</div>
+  <h2>A trillion-dollar economy<br/>with a billion-dollar safety problem.</h2>
+
+  <div class="market-wrap">
+    <div>
+      <p class="lead">SSA &amp; STM (Space Situational Awareness / Space Traffic Management) is the fastest-growing slice of the space economy. Every operator, insurer, and regulator needs better data — and they need it browser-native.</p>
+      <p style="margin-top:20px">Our beachhead: the long tail of <strong>2,000+ small/mid LEO operators</strong> priced out of LeoLabs, Slingshot, and Kayhan tier products.</p>
+    </div>
+    <div class="tam-block">
+      <div class="tam-row"><span class="lbl">TAM</span><div><div class="nm">Global space economy</div><div class="tam-bar"><div style="width:100%"></div></div></div><span class="val">$1.8T</span></div>
+      <div class="tam-row"><span class="lbl">SAM</span><div><div class="nm">SSA / STM software market</div><div class="tam-bar"><div style="width:18%"></div></div></div><span class="val">$3.2B</span></div>
+      <div class="tam-row"><span class="lbl">SOM</span><div><div class="nm">SaaS-tier LEO operators (Y3)</div><div class="tam-bar"><div style="width:4%"></div></div></div><span class="val placeholder">[$120M]</span></div>
+      <p class="muted" style="margin-top:14px;font-size:11px">TAM/SAM: McKinsey "Space: The $1.8T Opportunity" 2024; SAM derived from Euroconsult SSA forecast 2025–2032. SOM is internal estimate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- WHY NOW                                                                -->
+<!-- ====================================================================== -->
+<section id="why-now" class="fade-in">
+  <div class="section-tag">06 / WHY NOW</div>
+  <h2>Three tailwinds collide.</h2>
+  <div class="why-grid">
+    <div class="why-card">
+      <h4>Mega-constellations</h4>
+      <p>Starlink, Kuiper, Guowang, and IRIS² will push active satellites past 50,000 by 2030. Every new asset is a new conjunction surface and a new customer for risk products.</p>
+    </div>
+    <div class="why-card">
+      <h4>Regulatory mandates</h4>
+      <p>FCC's 5-year deorbit rule (2024), EU Space Law (in trilogue), and emerging UN STM frameworks are converting "best practice" into legal requirements — with audit trails.</p>
+    </div>
+    <div class="why-card">
+      <h4>Insurance hardening</h4>
+      <p>Space insurance premiums hit record highs in 2024 after Intelsat 33e. Underwriters now demand third-party MMOD risk attestations on policies above $50M.</p>
+    </div>
+    <div class="why-card">
+      <h4>Browser-native compute is finally enough</h4>
+      <p>WebGL2 + WebGPU let us propagate &gt;30k objects client-side at 60fps. The "install our desktop client" era is ending.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- TRACTION                                                               -->
+<!-- ====================================================================== -->
+<section id="traction" class="fade-in">
+  <div class="section-tag">07 / TRACTION</div>
+  <h2>Early signal.</h2>
+  <p class="muted">All metrics below labeled <span class="placeholder">[PLACEHOLDER]</span> — replace with verified figures before sharing externally.</p>
+
+  <div class="traction-grid">
+    <div class="s"><div class="v placeholder">[8]</div><div class="l">Pilot operators</div></div>
+    <div class="s"><div class="v placeholder">[$240k]</div><div class="l">Signed ARR</div></div>
+    <div class="s"><div class="v placeholder">[$1.6M]</div><div class="l">Pipeline (Q3)</div></div>
+    <div class="s"><div class="v placeholder">[14]</div><div class="l">LOIs from operators &amp; insurers</div></div>
+  </div>
+
+  <h4 style="margin-top:48px">Pilot &amp; design partners</h4>
+  <div class="logos">
+    <div class="lg placeholder">[OPERATOR A]</div>
+    <div class="lg placeholder">[OPERATOR B]</div>
+    <div class="lg placeholder">[INSURER C]</div>
+    <div class="lg placeholder">[AGENCY D]</div>
+    <div class="lg placeholder">[UNIVERSITY E]</div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- BUSINESS MODEL                                                         -->
+<!-- ====================================================================== -->
+<section id="business" class="fade-in">
+  <div class="section-tag">08 / BUSINESS MODEL</div>
+  <h2>SaaS, three tiers.</h2>
+  <p class="lead">Land with self-serve, expand to enterprise. Every tier is browser-native — no install ever.</p>
+
+  <div class="pricing">
+    <div class="tier">
+      <div class="name">OBSERVER</div>
+      <div class="price">Free<small> / forever</small></div>
+      <p class="muted" style="font-size:12px;margin-top:8px">For students, researchers, and curious astronomers.</p>
+      <ul>
+        <li>Public TLE catalog</li>
+        <li>3D globe + inspector</li>
+        <li>Read-only threat scores</li>
+        <li>Community support</li>
+      </ul>
+    </div>
+    <div class="tier featured">
+      <div class="name">OPERATOR</div>
+      <div class="price"><span class="placeholder">[$2.5k]</span><small> / mo / asset bundle</small></div>
+      <p class="muted" style="font-size:12px;margin-top:8px">For small-to-mid LEO operators.</p>
+      <ul>
+        <li>Up to 50 owned assets</li>
+        <li>Custom ephemeris uploads</li>
+        <li>Conjunction screening API</li>
+        <li>Slack/email alerts</li>
+        <li>Mission report exports</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <div class="name">ENTERPRISE</div>
+      <div class="price">Custom</div>
+      <p class="muted" style="font-size:12px;margin-top:8px">For constellations, agencies, insurers.</p>
+      <ul>
+        <li>Unlimited assets</li>
+        <li>On-prem / VPC deploy</li>
+        <li>Custom risk models</li>
+        <li>Audit-grade reporting</li>
+        <li>SSO, RBAC, SLA</li>
+        <li>Dedicated success eng</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- MOAT                                                                   -->
+<!-- ====================================================================== -->
+<section id="moat" class="fade-in">
+  <div class="section-tag">09 / TECH &amp; MOAT</div>
+  <h2>Why we win.</h2>
+  <div class="moat-grid">
+    <div class="moat-card">
+      <h4>Browser-native compute</h4>
+      <p>While competitors ship desktop clients or server-bound APIs, our entire propagation stack runs client-side. Lower CAC, instant onboarding, no IT review cycle.</p>
+    </div>
+    <div class="moat-card">
+      <h4>Proprietary risk model</h4>
+      <p>The v3.1 threat score is calibrated against historical conjunction outcomes. Each pilot operator improves the model — a classic data flywheel.</p>
+    </div>
+    <div class="moat-card">
+      <h4>UX moat</h4>
+      <p>The space industry's tools were designed by engineers for engineers. We design for ops directors, underwriters, and regulators — the people who actually sign POs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- ROADMAP                                                                -->
+<!-- ====================================================================== -->
+<section id="roadmap" class="fade-in">
+  <div class="section-tag">10 / ROADMAP</div>
+  <h2>The next 18 months.</h2>
+  <div class="timeline">
+    <div class="tl-item done">
+      <div class="when">Q2 2026 — SHIPPED</div>
+      <div class="what">Public dashboard v1</div>
+      <div class="desc">3D globe, CelesTrak ingestion, threat score v3.1, breakup feed, asset inspector. Currently live.</div>
+    </div>
+    <div class="tl-item">
+      <div class="when">Q3 2026</div>
+      <div class="what">Conjunction screening API</div>
+      <div class="desc">Upload owned ephemeris, get screened against full catalog. First paid tier launches.</div>
+    </div>
+    <div class="tl-item">
+      <div class="when">Q4 2026</div>
+      <div class="what">Insurance underwriting module</div>
+      <div class="desc">Audit-grade reports designed alongside <span class="placeholder">[INSURER C]</span> for policy attestations.</div>
+    </div>
+    <div class="tl-item">
+      <div class="when">Q1 2027</div>
+      <div class="what">WebGPU renderer + 50k objects</div>
+      <div class="desc">Render the full Starlink + Kuiper era in real-time on consumer hardware.</div>
+    </div>
+    <div class="tl-item">
+      <div class="when">Q2 2027</div>
+      <div class="what">Enterprise on-prem / VPC</div>
+      <div class="desc">Sovereignty-friendly deployment for agencies and primes that can't use SaaS.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- TEAM                                                                   -->
+<!-- ====================================================================== -->
+<section id="team" class="fade-in">
+  <div class="section-tag">11 / TEAM</div>
+  <h2>Builders, not bureaucrats.</h2>
+  <p class="muted">All names &amp; bios below are placeholders — replace with the real team before sharing externally.</p>
+  <div class="team-grid">
+    <div class="person">
+      <div class="av">LT</div>
+      <div class="nm placeholder">[Luis Tovar]</div>
+      <div class="role placeholder">[CO-FOUNDER / CEO]</div>
+      <div class="bio placeholder">[Background in aerospace systems and orbital mechanics. Previously at PLACEHOLDER. Built the v1 prototype.]</div>
+    </div>
+    <div class="person">
+      <div class="av">??</div>
+      <div class="nm placeholder">[Co-founder Name]</div>
+      <div class="role placeholder">[CO-FOUNDER / CTO]</div>
+      <div class="bio placeholder">[Background in PLACEHOLDER. Leads engineering and the propagation stack.]</div>
+    </div>
+    <div class="person">
+      <div class="av">??</div>
+      <div class="nm placeholder">[Advisor Name]</div>
+      <div class="role placeholder">[ADVISOR — SSA / DEFENSE]</div>
+      <div class="bio placeholder">[Former PLACEHOLDER at PLACEHOLDER. Opens doors with primes and agencies.]</div>
+    </div>
+  </div>
+  <p class="muted" style="margin-top:36px">Incorporated as <strong>Mayan Space OÜ</strong>, Tallinn, Estonia. <span class="placeholder">[Estonian e-residency, EU jurisdiction, ESA member state — register: PLACEHOLDER reg #]</span></p>
+</section>
+
+<!-- ====================================================================== -->
+<!-- ASK                                                                    -->
+<!-- ====================================================================== -->
+<section id="ask" class="fade-in">
+  <div class="section-tag">12 / THE ASK</div>
+  <h2>Raising the round to capture the wedge.</h2>
+
+  <div class="ask">
+    <div class="muted" style="font-size:11px;letter-spacing:3px">CURRENT ROUND</div>
+    <div class="ask-amount placeholder">[$2.5M]<small> &nbsp; SAFE / 18-MONTH RUNWAY</small></div>
+    <p class="lead">We're raising a <span class="placeholder">[seed]</span> round to ship the conjunction screening API, sign the first 5 paying enterprise customers, and harden the risk model with operator data.</p>
+
+    <div class="use-of-funds">
+      <div class="uof"><div class="pct placeholder">[55%]</div><div class="what">Engineering</div></div>
+      <div class="uof"><div class="pct placeholder">[20%]</div><div class="what">Go-to-market</div></div>
+      <div class="uof"><div class="pct placeholder">[15%]</div><div class="what">Data &amp; compliance</div></div>
+      <div class="uof"><div class="pct placeholder">[10%]</div><div class="what">Reserve</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================================== -->
+<!-- CONTACT                                                                -->
+<!-- ====================================================================== -->
+<div id="contact" class="contact-cta fade-in">
+  <h2>Let's talk.</h2>
+  <p class="lead" style="text-align:center">If you invest in space, defense tech, or vertical SaaS — we'd love to walk you through the deck.</p>
+  <div class="contact-grid">
+    <a class="btn btn-primary" href="mailto:invest@mayanspace.com">invest@mayanspace.com</a>
+    <a class="btn btn-secondary" href="./" target="_blank">Live demo</a>
+    <a class="btn btn-secondary" href="https://github.com/astroraul/orbitguard" target="_blank">GitHub</a>
+  </div>
+</div>
+
+<footer>
+  © <span class="placeholder">[2026]</span> Mayan Space OÜ · Tallinn, Estonia ·
+  <a href="./">Live demo</a> ·
+  <a href="https://github.com/astroraul/orbitguard">Source</a> ·
+  <a href="mailto:invest@mayanspace.com">Investor relations</a>
+  <br/><br/>
+  OrbitGuard is an awareness/intelligence tool. Not for operational collision avoidance maneuver decisions.
+</footer>
+
+<script>
+/* ===== STARFIELD ===== */
+(function(){
+  const c=document.getElementById('starcanvas');
+  const ctx=c.getContext('2d');
+  let w,h,stars=[];
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;
+    stars=Array.from({length:Math.min(220,Math.floor(w*h/9000))},()=>({
+      x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.2+.2,
+      o:Math.random()*.6+.2,s:Math.random()*.04+.01
+    }));
+  }
+  resize();addEventListener('resize',resize);
+  function tick(){
+    ctx.clearRect(0,0,w,h);
+    for(const st of stars){
+      st.o+=st.s*(Math.random()<.5?-1:1);
+      if(st.o<.15)st.o=.15;if(st.o>.9)st.o=.9;
+      ctx.fillStyle=`rgba(180,220,255,${st.o})`;
+      ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,Math.PI*2);ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ===== FADE-IN ON SCROLL ===== */
+(function(){
+  const io=new IntersectionObserver((entries)=>{
+    for(const e of entries){if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}}
+  },{threshold:.1,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.fade-in').forEach(el=>io.observe(el));
+})();
+
+/* ===== ANIMATED COUNTERS ===== */
+(function(){
+  function fmt(n){
+    if(n>=1000000)return (n/1000000).toFixed(n>=10000000?0:1).replace(/\.0$/,'')+'M';
+    if(n>=1000)return (n/1000).toFixed(n>=10000?0:1).replace(/\.0$/,'')+'K';
+    return Math.floor(n).toString();
+  }
+  const io=new IntersectionObserver((entries)=>{
+    for(const e of entries){
+      if(!e.isIntersecting)continue;
+      const el=e.target;
+      const target=parseInt(el.dataset.count,10);
+      const suffix=el.dataset.suffix||'';
+      const dur=1600;const start=performance.now();
+      function step(t){
+        const p=Math.min(1,(t-start)/dur);
+        const eased=1-Math.pow(1-p,3);
+        el.textContent=fmt(target*eased)+(p===1?suffix:'');
+        if(p<1)requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+      io.unobserve(el);
+    }
+  },{threshold:.4});
+  document.querySelectorAll('[data-count]').forEach(el=>io.observe(el));
+})();
+</script>
+
+</body>
+</html>
